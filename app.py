@@ -13,7 +13,7 @@ st.set_page_config(page_title="Pothole Detection System", page_icon="🛣️", l
 
 # Sidebar Controls
 st.sidebar.header("Settings")
-enable_alerts = st.sidebar.checkbox("Enable Audio Alerts", value=True)
+enable_alerts = st.sidebar.checkbox("Enable Audio Alerts", value=False)
 threshold_value = st.sidebar.slider("Threshold Value", 50, 255, 140)
 min_area = st.sidebar.slider("Min Pothole Area", 100, 5000, 3093)
 sensitivity = st.sidebar.slider("Detection Sensitivity", 0.1, 1.0, 0.10, 0.05)
@@ -100,8 +100,7 @@ def process_video(video_path):
 
 # Update Stats Display
 def update_statistics(total_potholes, pothole_sizes, frame_pothole_counts, final=False):
-    pothole_count_placeholder.markdown(f"**Total Potholes:** {total_potholes}")
-    
+    # pothole_count_placeholder.markdown(f"**Total Potholes:** {total_potholes}")
     avg_size = np.mean(pothole_sizes) if pothole_sizes else 0
     avg_size_placeholder.markdown(f"**Avg. Size:** {int(avg_size)} px²")
 
