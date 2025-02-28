@@ -23,9 +23,9 @@ image_path = "Pothole.jpg"  # Ensure the image exists
 image = cv2.imread(image_path)
 
 # Define detection parameters
-threshold_value = 120  
-min_area = 2800        
-sensitivity = 0.6      
+threshold_value = 12
+min_area = 2800
+sensitivity = 0.6
 
 # Process the image
 processed_image, potholes = detect_potholes(image, threshold_value, min_area, sensitivity)

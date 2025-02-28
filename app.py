@@ -14,9 +14,9 @@ st.set_page_config(page_title="Pothole Detection System", page_icon="🛣️", l
 # Sidebar Controls
 st.sidebar.header("Settings")
 enable_alerts = st.sidebar.checkbox("Enable Audio Alerts", value=False)
-threshold_value = st.sidebar.slider("Threshold Value", 50, 255, 140)
+threshold_value = st.sidebar.slider("Threshold Value", 50, 255, 69)
 min_area = st.sidebar.slider("Min Pothole Area", 100, 5000, 3093)
-sensitivity = st.sidebar.slider("Detection Sensitivity", 0.1, 1.0, 0.10, 0.05)
+sensitivity = st.sidebar.slider("Detection Sensitivity", 0.1, 1.0, 8.95, 0.05)
 
 # File Upload
 uploaded_file = st.sidebar.file_uploader("Upload a Video", type=["mp4", "avi", "mov"])
@@ -43,7 +43,7 @@ def process_video(video_path):
     cap = cv2.VideoCapture(video_path)
     total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     fps = cap.get(cv2.CAP_PROP_FPS)
-    
+
     if fps == 0:
         fps = 30  # Fallback for unknown FPS
 
@@ -52,19 +52,25 @@ def process_video(video_path):
     frame_pothole_counts = []
 
     current_frame = 0
-    
+
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
             break
-        
+
         current_frame += 1
         progress = current_frame / total_frames
         progress_placeholder.progress(progress)
         status_placeholder.text(f"Processing frame {current_frame} of {total_frames}")
 
         # Detect potholes in the frame
-        processed_frame, potholes = detect_potholes(frame, threshold_value, min_area, sensitivity)
+        processed_frame, potholes = detect_potholes(frame, conf_threshold=0.5)
+
+        # Convert frame to RGB for Streamlit
+        processed_frame_rgb = cv2.cvtColor(processed_frame, cv2.COLOR_BGR2RGB)
+
+        # Display the processed frame
+        video_placeholder.image(processed_frame_rgb, channels="RGB", use_column_width=True)
 
         # Update stats
         frame_pothole_count = len(potholes)
@@ -72,7 +78,7 @@ def process_video(video_path):
         frame_pothole_counts.append(frame_pothole_count)
 
         for pothole in potholes:
-            pothole_sizes.append(pothole["area"])
+            pothole_sizes.append(pothole["w"] * pothole["h"])
 
         # Play alert if potholes detected
         if enable_alerts and frame_pothole_count > 0:
@@ -81,11 +87,7 @@ def process_video(video_path):
         else:
             alert_placeholder.empty()
 
-        # Display processed frame
-        processed_frame_rgb = cv2.cvtColor(processed_frame, cv2.COLOR_BGR2RGB)
-        video_placeholder.image(processed_frame_rgb, channels="RGB", use_column_width=True)
-
-        # Update Statistics
+        # Update statistics
         update_statistics(total_potholes, pothole_sizes, frame_pothole_counts)
 
         # Slow down for real-time effect
@@ -93,9 +95,11 @@ def process_video(video_path):
 
     cap.release()
     status_placeholder.text("Processing complete!")
-    # Play alert sound at the end if potholes were detected
+
+    # Final alert if potholes were detected
     if total_potholes > 0 and enable_alerts:
         play_alert_sound()
+
     update_statistics(total_potholes, pothole_sizes, frame_pothole_counts, final=True)
 
 # Update Stats Display
