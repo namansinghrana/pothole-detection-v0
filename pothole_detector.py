@@ -5,7 +5,7 @@ import pygame
 import time
 
 # Load a more accurate YOLOv8 model for pothole detection
-model = YOLO("yolov8m.pt")  # Change to 'yolov8m' or a fine-tuned pothole detection model if available
+model = YOLO("selftrained.pt")  # Change to 'yolov8m' or a fine-tuned pothole detection model if available
 
 def detect_potholes(frame, conf_threshold=0.5):
     """
