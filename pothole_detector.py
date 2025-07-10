@@ -1,7 +1,7 @@
 from ultralytics import YOLO
 import cv2
 import numpy as np
-import pygame
+#import pygame
 import time
 
 # Load a more accurate YOLOv8 model for pothole detection
@@ -40,13 +40,13 @@ def detect_potholes(frame, conf_threshold=0.5):
 
     return processed_frame, potholes
 
-def play_alert_sound():
-    """
-    Plays an alert sound when a pothole is detected.
-    """
-    pygame.init()
-    pygame.mixer.init()
-    pygame.mixer.music.load("buzz.mp3")
-    pygame.mixer.music.play()
-    time.sleep(2)
-    pygame.mixer.music.stop()
+# def play_alert_sound():
+#     """
+#     Plays an alert sound when a pothole is detected.
+#     """
+#     pygame.init()
+#     pygame.mixer.init()
+#     pygame.mixer.music.load("buzz.mp3")
+#     pygame.mixer.music.play()
+#     time.sleep(2)
+#     pygame.mixer.music.stop()

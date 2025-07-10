@@ -6,7 +6,7 @@ import os
 import time
 import pandas as pd
 import matplotlib.pyplot as plt
-from pothole_detector import detect_potholes, play_alert_sound  # Ensure this module is updated
+from pothole_detector import detect_potholes  # Ensure this module is updated
 
 # Set up the Streamlit app
 st.set_page_config(page_title="Pothole Detection System", page_icon="🛣️", layout="wide")
@@ -82,7 +82,7 @@ def process_video(video_path):
 
         # Play alert if potholes detected
         if enable_alerts and frame_pothole_count > 0:
-            play_alert_sound()
+            #play_alert_sound()
             alert_placeholder.markdown("⚠️ **POTHOLE DETECTED!**", unsafe_allow_html=True)
         else:
             alert_placeholder.empty()
@@ -97,8 +97,8 @@ def process_video(video_path):
     status_placeholder.text("Processing complete!")
 
     # Final alert if potholes were detected
-    if total_potholes > 0 and enable_alerts:
-        play_alert_sound()
+    # if total_potholes > 0 and enable_alerts:
+    #     #play_alert_sound()
 
     update_statistics(total_potholes, pothole_sizes, frame_pothole_counts, final=True)
 
