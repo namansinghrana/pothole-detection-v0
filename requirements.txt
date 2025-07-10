@@ -1,8 +1,7 @@
 streamlit==1.24.0
-opencv-python
+opencv-python==4.7.0.72
 numpy
 pillow==9.5.0
 matplotlib
 pandas==2.0.2
-pygame
-
+# pygame  ← Remove or comment out unless absolutely necessary
