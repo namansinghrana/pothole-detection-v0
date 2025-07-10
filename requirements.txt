@@ -4,4 +4,4 @@ numpy
 pillow==9.5.0
 matplotlib
 pandas==2.0.2
-# pygame  ← Remove or comment out unless absolutely necessary
+# pygame  ← optional, only if needed
